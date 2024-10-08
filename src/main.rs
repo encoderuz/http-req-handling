@@ -1,16 +1,17 @@
 use actix_web::{App, HttpServer};
-mod views;
-mod to_do;
-mod state;
+mod json_serialization;
 mod processes;
+mod state;
+mod to_do;
+mod views;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         let app = App::new().configure(views::views_factory);
-        return app
+        return app;
     })
-        .bind("127.0.0.1:8000")?
-        .run()
-        .await
+    .bind("127.0.0.1:8000")?
+    .run()
+    .await
 }
