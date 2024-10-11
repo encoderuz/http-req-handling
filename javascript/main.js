@@ -1,9 +1,4 @@
-let createButton = document.getElementById("create-button");
-createButton.addEventListener("click", function () {
-    let title_input = document.getElementById("name");
-    alert(title_input.value);
-    title_input.value = null;
-});
+
 
 function renderItems(items, processType, elementId, processFunction) {
     let itemsMeta = [];
@@ -29,15 +24,20 @@ function renderItems(items, processType, elementId, processFunction) {
     }
 }
 
+
 function apiCall(url, method) {
     let xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
-    xhr.addEventListener('readystatechange', function () {
+    xhr.addEventListener('readystatechange', function() {
         if (this.readyState === this.DONE) {
             renderItems(JSON.parse(this.responseText)["pending_items"],
                 "edit", "pendingItems", editItem);
             renderItems(JSON.parse(this.responseText)["done_items"], "delete",
                 "doneItems", deleteItem);
+            document.getElementById("completeNum").innerHTML = JSON.parse(
+                this.responseText)["done_item_count"];
+            document.getElementById("pendingNum").innerHTML = JSON.parse(
+                this.responseText)["pending_item_count"];
         }
     })
     xhr.open(method, url);
@@ -46,8 +46,10 @@ function apiCall(url, method) {
     return xhr
 }
 
+
 function editItem() {
-    let title = this.id.replaceAll("-", " ").replace("edit ", "");
+    let title = this.id.replaceAll("-", " ")
+        .replace("edit ", "");
     let call = apiCall("/v1/item/edit", "POST");
 
     let json = {
