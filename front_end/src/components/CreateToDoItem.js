@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from "axios";
-
+import "../App.css";
 class CreateToDoItem extends Component {
     state = {
         title: ""
@@ -28,8 +28,7 @@ class CreateToDoItem extends Component {
                        onChange={this.handleTitleChange}/>
                 <div className="actionButton"
                      id="create-button"
-                     onClick={this.createItem}>
-                    Create
+                     onClick={this.createItem}>Create
                 </div>
             </div>
         )

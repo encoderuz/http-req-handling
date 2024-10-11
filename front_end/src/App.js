@@ -3,6 +3,7 @@ import './App.css';
 import {Component} from "react";
 import ToDoItem from "./components/ToDoItem";
 import CreateToDoItem from "./components/CreateToDoItem";
+
 class App extends Component {
     state = {
         "pending_items": [],
@@ -35,10 +36,23 @@ class App extends Component {
         this.getItems();
     }
 
+    handleReturnedState = (response) => {
+        let pending_items = response.data["pending_items"]
+        let done_items = response.data["done_items"]
+        this.setState({
+            "pending_items":
+                this.processItemValues(pending_items),
+            "done_items": this.processItemValues(done_items),
+            "pending_items_count":
+                response.data["pending_item_count"],
+            "done_items_count": response.data["done_item_count"]
+        })
+    }
+
     // convert items from API to HTML
     processItemValues(items) {
         let itemList = [];
-        items.forEach((item, _)=>{
+        items.forEach((item, _) => {
             itemList.push(
                 <ToDoItem key={item.title + item.status}
                           title={item.title}
@@ -49,15 +63,26 @@ class App extends Component {
         })
         return itemList
     }
+
     render() {
         return (
             <div className="App">
-                <h1>Done Items</h1>
-                <p>done item count: {this.state.done_items_count}</p>
-                {this.state.done_items}
-                <h1>Pending Items</h1>
-                <p>pending item count:     {this.state.pending_items_count}</p>
-                {this.state.pending_items}
+                <div className="mainContainer">
+                    <div className="header">
+                        <p>complete tasks:
+                            {this.state.done_items_count}</p>
+                        <p>pending tasks:
+                            {this.state.pending_items_count}</p>
+                    </div>
+                    <h1>Pending Items</h1>
+                    {this.state.pending_items}
+                    <h1>Done Items</h1>
+                    {this.state.done_items}
+                    <CreateToDoItem
+                        passBackResponse={this.handleReturnedState}
+                    />
+
+                </div>
             </div>
         )
     }

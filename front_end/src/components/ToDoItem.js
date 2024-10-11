@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from "axios";
-
+import "../App.css";
 class ToDoItem extends Component {
     state = {
         "title": this.props.title, "status": this.props.status, "button": this.processStatus(this.props.status)
@@ -33,9 +33,11 @@ class ToDoItem extends Component {
 
     render() {
         return (
-            <div>
+            <div className="itemContainer">
                 <p>{this.state.title}</p>
-                <button onClick={this.sendRequest}>{this.state.button}</button>
+                <div className="actionButton" onClick=
+                    {this.sendRequest}>
+                    {this.state.button}</div>
             </div>
         )
     }
