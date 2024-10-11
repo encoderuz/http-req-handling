@@ -1,5 +1,6 @@
 use actix_service::Service;
 use actix_web::{App, HttpServer};
+use actix_cors::Cors;
 mod json_serialization;
 mod processes;
 mod state;
@@ -10,6 +11,7 @@ mod jwt;
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
+        let cors = Cors::permissive();
         let app = App::new()
             .wrap_fn(|req,srv|{
                 println!("{:?}",req);
@@ -19,7 +21,8 @@ async fn main() -> std::io::Result<()> {
                     Ok(result)
                 }
             })
-            .configure(views::views_factory);
+            .configure(views::views_factory)
+            .wrap(cors);
         return app;
     })
     .bind("127.0.0.1:8000")?
