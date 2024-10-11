@@ -1,7 +1,8 @@
 import axios from "axios";
 import './App.css';
 import {Component} from "react";
-
+import ToDoItem from "./components/ToDoItem";
+import CreateToDoItem from "./components/CreateToDoItem";
 class App extends Component {
     state = {
         "pending_items": [],
@@ -37,13 +38,17 @@ class App extends Component {
     // convert items from API to HTML
     processItemValues(items) {
         let itemList = [];
-
-        items.forEach((item, index) => {
-            itemList.push(<li key={index}>{item.title} {item.status}</li>)
+        items.forEach((item, _)=>{
+            itemList.push(
+                <ToDoItem key={item.title + item.status}
+                          title={item.title}
+                          status={item.status.status}
+                          passBackResponse={
+                              this.handleReturnedState}/>
+            )
         })
         return itemList
     }
-
     render() {
         return (
             <div className="App">
