@@ -1,5 +1,6 @@
 
-
+front_end/node_modules
+front_end/.idea
 .idea
 .DS_Store
 target
